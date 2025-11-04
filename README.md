@@ -9,7 +9,7 @@ NPM: 2406405563
 *Parent widget* adalah elemen yang berfungsi sebagai pembungkus dan pengatur layout, sedangkan *child widget* adalah elemen yang berada di dalam parent tersebut dan akan ditampilkan sesuai pengaturan dari parentnya.
 
 Contoh yang saya pakai:
-```
+```dart
 MaterialApp(
     title: 'Jaa Soccer',
     theme: ThemeData(
