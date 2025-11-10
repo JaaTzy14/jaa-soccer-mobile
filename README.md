@@ -2,6 +2,79 @@ Nama: Mirza Radithya Ramadhana<br>
 Kelas: PBP - B<br>
 NPM: 2406405563
 
+## Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
+### 1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+`Navigator.push()` akan menambahkan (menumpuk) halaman baru di atas stack. Artinya, halaman sebelumnya tetap tersimpan, sehingga pengguna masih bisa kembali ke halaman sebelumnya. Sementara, `Navigator.pushReplacement()` akan mengganti halaman paling atas di stack dengan halaman baru. Jadi, halaman sebelumnya dihapus dari stack, sehingga pengguna tidak bisa kembali ke halaman tersebut.
+
+`Navigator.push()` bagus digunakan jika halaman sebelumnya masih diperlukan, seperti saat memencet tombol Add Product dari main page. `Navigator.pushReplacement()` bagus jika halaman lama sudah tidak perlu diakses lagi, seperti berpindah halaman via drawer.
+
+-----
+
+### 2. Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+
+Setiap halaman pada tugas saya menggunakan `Scaffold` sebagai kerangka utama, dengan `AppBar` di bagian atas. Saya juga memanfaatkan `left_drawer.dart` sebagai Drawer dari setiap `Scaffold` di tiap halaman agar tampilan dan navigasi aplikasi tetap konsisten. Dengan membuat komponen `Drawer` terpisah, saya tidak perlu menulis ulang di setiap halaman. Saya cukup memanggil `LeftDrawer()` di properti drawer milik Scaffold. Hal ini membuat semua halaman memiliki struktur yang mirip dan membuat tiap halaman konsisten.
+
+-----
+
+### 3. Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+`Padding` digunakan untuk memberi jarak antar elemen form agar tampilan lebih rapi dan tidak saling menempel.<br>
+Contoh yang saya gunakan:
+```dart
+Padding(
+  padding: EdgeInsets.all(8.0),
+  ...
+)
+```
+
+
+`SingleChildScrollView` digunakan agar form dapat di-scroll, sehingga pengguna tetap bisa mengisi seluruh form tanpa terpotong layar.<br>
+Contoh yang saya gunakan:
+```dart
+SingleChildScrollView(
+  child: Column(
+    ...
+  ),
+)
+```
+
+`ListView` saya gunakan pada Left Drawer untuk menampilkan daftar menu navigasi secara vertikal dan dapat di-*scroll* jika kontennya melebihi tinggi layar.<br>
+Contohnya yang saya gunakan:
+```dart
+Drawer(
+  child: ListView(
+    children: [
+      DrawerHeader(...),
+      ListTile(
+        leading: Icon(Icons.home_outlined),
+        title: Text('Home'),
+        onTap: () { ... },
+      ),
+      ListTile(
+        leading: Icon(Icons.add_box_outlined),
+        title: Text('Add Product'),
+        onTap: () { ... },
+      ),
+    ],
+  ),
+)
+```
+
+-----
+
+### 4. Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+Saya menggunakan `ColorScheme` pada `ThemeData` di `main.dart` untuk menentukan warna tema aplikasi saya. Dalam aplikasi saya, warna utama (`primary`) menggunakan kode `Color(0xFF172554)` (biru tua) dan warna sekunder (`secondary`) menggunakan `Color(0xFF2563EB)` (biru terang).
+Warna-warna dari ColorScheme ini kemudian digunakan secara konsisten di seluruh aplikasi.<br>
+Contoh pemakaian di kode saya:
+```dart
+appBar: AppBar(
+  ...
+  backgroundColor: Theme.of(context).colorScheme.primary,
+  ...
+)
+```
+
+-----
+
 ## Tugas 7: Elemen Dasar Flutter
 ### 1. Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
 **Widget tree** adalah struktur dari seluruh widget dalam aplikasi Flutter. Setiap elemen di layar (seperti teks dan tombol) merupakan bagian dari widget tree. Setiap widget membentuk struktur **parent-child**.
