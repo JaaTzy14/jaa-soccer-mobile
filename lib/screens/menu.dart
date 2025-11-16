@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jaa_soccer/screens/product_entry_list.dart';
 import 'package:jaa_soccer/screens/products_form.dart';
 import 'package:jaa_soccer/widgets/left_drawer.dart';
 
@@ -147,6 +148,20 @@ class ItemCard extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ProductFormPage(),
               ));
+            } else if (item.name == "All Products") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductEntryListPage(filterType: "all")
+                    ),
+                );
+            } else if (item.name == "My Products") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductEntryListPage(filterType: "mine")
+                    ),
+                );
             }
         },
         child: Container(

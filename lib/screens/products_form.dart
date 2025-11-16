@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jaa_soccer/widgets/left_drawer.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:jaa_soccer/screens/menu.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -29,6 +33,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -237,47 +242,36 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Product added succesfully!'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Name: $_name'),
-                                    Text('Category: ${_categories[_category]}'),
-                                    Text('Stock: $_stock'),
-                                    Text('Price: $_price'),
-                                    Text('Description: $_description'),
-                                    Text('Thumbnail URL: $_thumbnail'),
-                                    Text('Featured: ${_isFeatured ? "Yes" : "No"}'),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                        final response = await request.postJson(
+                          "https://mirza-radithya-jaasoccer.pbp.cs.ui.ac.id/create-flutter/",
+                          jsonEncode({
+                            "name": _name,
+                            "category": _category,
+                            "stock": _stock,
+                            "price": _price,
+                            "description": _description,
+                            "thumbnail": _thumbnail,
+                            "is_featured": _isFeatured,
+                          }),
                         );
-                        _formKey.currentState!.reset();
-                        setState(() { 
-                          _name = ''; 
-                          _price = 0; 
-                          _stock = 0; 
-                          _description = ''; 
-                          _thumbnail = ''; 
-                          _isFeatured = false; 
-                          _category = 'jersey';
-                        });
+                        if (context.mounted) {
+                          if (response['status'] == 'success') {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Product added successfully!"),
+                            ));
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Something went wrong, please try again."),
+                            ));
+                          }
+                        }
                       }
                     },
                     child: const Text(
